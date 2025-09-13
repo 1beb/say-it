@@ -48,11 +48,12 @@ I use **Super+D**, because I don't use the desktop. Choose your own adventure he
 5. Text is automatically typed at your cursor position using ydotool
 
 ### Project Files
-- `/home/b/projects/say-it/start_dictation.sh` - Starts audio recording
-- `/home/b/projects/say-it/stop_dictation.sh` - Stops recording and types transcribed text
-- `/home/b/projects/say-it/toggle_dictation.sh` - Toggle script (used by keyboard shortcut)
+- `/path/to/say-it/start_dictation.sh` - Starts audio recording
+- `/path/to/say-it/stop_dictation.sh` - Stops recording and types transcribed text
+- `/path/to/say-it/toggle_dictation.sh` - Toggle script (used by keyboard shortcut)
 
 ### Model
+
 Using: **base.en** (142 MB) - English-only model with good speed/accuracy balance
 
 ### Troubleshooting
@@ -65,23 +66,11 @@ tail -f /tmp/dictation_debug.log
 #### Test Recording
 ```bash
 # Run the toggle script manually to test
-/home/b/projects/say-it/toggle_dictation.sh
+/say-it/toggle_dictation.sh
 ```
 
-#### Change Keyboard Shortcut
-Go to: Settings → Keyboard → Custom Shortcuts → "Whisper Dictation Toggle"
-
-#### If ydotool stops working
-The warning "ydotoold backend unavailable" is normal and doesn't affect functionality.
-If typing stops working completely, you may need to restart your session.
-
-### Performance Tips
-- Speak clearly and at a normal pace
-- Minimize background noise
-- The transcription typically takes 1-3 seconds after stopping
-- For longer dictations, the base.en model can handle several minutes of audio
-
 ### Alternative Models
+
 To use a different model, edit the MODEL variable in the scripts:
 - `tiny.en` (75 MB) - Faster but less accurate
 - `small.en` (466 MB) - More accurate but slower
