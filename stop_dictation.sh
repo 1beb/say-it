@@ -1,12 +1,21 @@
 #!/bin/bash
 
 # Configuration
-WHISPER_DIR="/home/b/whisper.cpp"
+# Set WHISPER_CPP_PATH environment variable to point to your whisper.cpp installation
+# Default to ~/whisper.cpp if not set
+WHISPER_DIR="${WHISPER_CPP_PATH:-$HOME/whisper.cpp}"
 WHISPER_BIN="$WHISPER_DIR/build/bin/whisper-cli"
 MODEL="$WHISPER_DIR/models/ggml-base.en.bin"
 TEMP_AUDIO="/tmp/dictation_recording.wav"
 TEMP_TEXT="/tmp/dictation_text.txt"
 PID_FILE="/tmp/dictation.pid"
+
+# Check if whisper.cpp exists
+if [ ! -d "$WHISPER_DIR" ]; then
+    echo "Error: whisper.cpp not found at $WHISPER_DIR"
+    echo "Set WHISPER_CPP_PATH environment variable or install whisper.cpp at ~/whisper.cpp"
+    exit 1
+fi
 
 # Check if recording is in progress
 if [ ! -f "$PID_FILE" ]; then

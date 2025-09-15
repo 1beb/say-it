@@ -1,38 +1,58 @@
-# Whisper.cpp Voice Dictation System
+# Say-It: Whisper.cpp Voice Dictation System
 
-## System Requirements
+## Prerequisites
 
-### Platform
-- Ubuntu 24.04 (or similar Linux distribution)
-- Wayland or X11 session (Wayland tested)
-
-### Dependencies Installed
-- **whisper.cpp** - Built from source with CMake
-- **ydotool** - For typing text in Wayland/X11
-- **arecord** (alsa-utils) - For audio recording
-- **sox** - For audio feedback beeps
-- **ffmpeg** - For audio format conversion if needed
-- **Build tools**: gcc, g++, cmake, build-essential
-
-### Installation Commands
+### 1. Install whisper.cpp
+Build and install whisper.cpp with a model:
 ```bash
-# Build dependencies (already installed)
-sudo apt install build-essential cmake git
+git clone https://github.com/ggml-org/whisper.cpp.git
+cd whisper.cpp
+cmake -B build
+cmake --build build -j
 
-# Audio and typing tools (already installed)
-sudo apt install alsa-utils sox ffmpeg ydotool
-
-# Note: ydotool works even with the "backend unavailable" warning
+# Download base.en model (recommended for dictation)
+cd models
+bash download-ggml-model.sh base.en
 ```
 
-## Setting Up Keyboard Shortcut (Ubuntu GNOME)
+### 2. System Dependencies
+Install required packages on Ubuntu:
+```bash
+sudo apt install ydotool sox alsa-utils
+```
+
+### Platform Requirements
+- Ubuntu 24.04 (or similar Linux distribution)
+- Wayland or X11 session (tested on Wayland)
+- **ydotool** - For typing text (works on both Wayland and X11)
+- **arecord** (alsa-utils) - For audio recording
+- **sox** - For audio feedback beeps
+
+## Setup
+
+### 1. Clone this repository
+```bash
+git clone <repository-url> ~/projects/say-it
+cd ~/projects/say-it
+```
+
+### 2. Configure whisper.cpp path
+The scripts will look for whisper.cpp in `~/whisper.cpp` by default.
+
+If your whisper.cpp is installed elsewhere, set the environment variable:
+```bash
+# Add to your ~/.bashrc or ~/.profile
+export WHISPER_CPP_PATH="/path/to/your/whisper.cpp"
+```
+
+### 3. Set Up Keyboard Shortcut (Ubuntu GNOME)
 
 1. Open **Settings** → **Keyboard** → **View and Customize Shortcuts**
 2. Scroll down to **Custom Shortcuts**
 3. Click the **'+'** button to add a new shortcut
 4. Enter:
-   - **Name:** Whisper Dictation Toggle
-   - **Command:** `/home/b/projects/say-it/toggle_dictation.sh`
+   - **Name:** Say-It Dictation
+   - **Command:** Full path to toggle script (e.g., `/home/YOUR_USERNAME/projects/say-it/toggle_dictation.sh`)
    - **Shortcut:** Click "Set Shortcut" and press your desired keys (e.g., Super+Alt+D)
 
 ## Quick Reference
@@ -48,12 +68,16 @@ sudo apt install alsa-utils sox ffmpeg ydotool
 5. Text is automatically typed at your cursor position using ydotool
 
 ### Project Files
-- `/home/b/projects/say-it/start_dictation.sh` - Starts audio recording
-- `/home/b/projects/say-it/stop_dictation.sh` - Stops recording and types transcribed text
-- `/home/b/projects/say-it/toggle_dictation.sh` - Toggle script (used by keyboard shortcut)
+- `start_dictation.sh` - Starts audio recording
+- `stop_dictation.sh` - Stops recording and types transcribed text
+- `toggle_dictation.sh` - Toggle script (used by keyboard shortcut)
 
-### Model
-Using: **base.en** (142 MB) - English-only model with good speed/accuracy balance
+### Whisper Model
+Default: **base.en** (142 MB) - English-only model with good speed/accuracy balance
+
+To use a different model:
+1. Download it to your whisper.cpp/models directory
+2. Update the MODEL variable in start_dictation.sh and stop_dictation.sh
 
 ### Troubleshooting
 
@@ -65,7 +89,7 @@ tail -f /tmp/dictation_debug.log
 #### Test Recording
 ```bash
 # Run the toggle script manually to test
-/home/b/projects/say-it/toggle_dictation.sh
+./toggle_dictation.sh
 ```
 
 #### Change Keyboard Shortcut
